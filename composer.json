@@ -1,0 +1,9 @@
+{
+    "name": "leveling",
+    "description": "Aula de dev1 trabalho de nivelamento valendo um ponto, entregar 18/01/19",
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/"
+        }
+    }
+}
