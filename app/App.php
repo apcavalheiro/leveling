@@ -7,7 +7,6 @@ use App\Controllers\HomeController;
 
 class App
 {
-
     private $controller;
     private $controllerFile;
     private $action;
@@ -73,7 +72,7 @@ class App
         $path = array_filter($path);
         // Recria as chaves do array
         $path = array_values($path);
-       
+
         $this->controller = $this->verificaArray($path, 0);
         $this->action = $this->verificaArray($path, 1);
 

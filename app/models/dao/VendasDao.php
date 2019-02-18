@@ -36,10 +36,13 @@ class VendasDao extends BaseDao
 
         return false;
     }
-
     public function listar()
     {
-        $resultado = $this->select(
+
+
+        $resultado = $this->select('select * from cliente');
+
+       /* $resultado = $this->select(
             'SELECT  v.id as vendaId,
                               v.produto as produto,
                               v.preco,
@@ -48,7 +51,6 @@ class VendasDao extends BaseDao
                       INNER JOIN  cliente as c ON v.cliente_id = c.id'
         );
         $dataSetVendas = $resultado->fetchAll();
-
         if ($dataSetVendas) {
 
             $listavendas = [];
@@ -58,15 +60,16 @@ class VendasDao extends BaseDao
                 $venda->setId($dataSetvenda['vendaId']);
                 $venda->setProduto($dataSetvenda['produto']);
                 $venda->setPreco($dataSetvenda['preco']);
+                $venda->setTotal($dataSetvenda['total']);
                 $venda->getCliente()->setNome($dataSetvenda['nome']);
 
                 $listavendas[] = $venda;
             }
 
-            return $listavendas;
-        }
+            return $listavendas; 
+    } */
 
-        return false;
+        return $resultado;
     }
 
     public function salvarVenda(Vendas $venda)

@@ -1,10 +1,10 @@
 $(document).ready(function () {
-    $('.form_cadastro').validate({
+    $('form').validate({
         rules: {
-            nome: {
+            total: {
                 required: true
             },
-            total: {
+            nome: {
                 required: true
             }
         },
@@ -24,11 +24,11 @@ $(document).ready(function () {
             }
         },
         messages: {
-            nome: {
-                required: "Este campo não pode ser vazio!"
-            },
             total: {
                 required: "A lista de vendas não pode ser vazia!"
+            },
+            nome: {
+                required: "Este campo não pode ser vazio!"
             }
         }
     });
@@ -43,6 +43,3 @@ $(document).ready(function () {
     }, 5000);
 
 });
-
-
-

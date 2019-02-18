@@ -14,10 +14,14 @@ class VendasController extends Controller
 {
     public function index()
     {
+
         $vendasDao = new VendasDao();
-        self::setViewParam('listaDeProdutos', $vendasDao->listar());
+
+        self::setViewParam('listaDeVendas', $vendasDao->listar());
+        /*
+        
         $this->render('/vendas/index');
-        Session::clearSession(['errors', 'success']);
+        Session::clearSession(['errors', 'success']);*/
     }
 
     public function show($id)
@@ -34,8 +38,9 @@ class VendasController extends Controller
         Session::clearSession(['errors', 'success', 'form']);
     }
 
-    public function salvarVendas()
+    public function salvar()
     {
+        dd($_POST);
         $vendas = new Vendas();
         $vendasDao = new VendasDao();
         $vendas->set($_POST['cliente']);
@@ -47,7 +52,7 @@ class VendasController extends Controller
         $valida = new ValidaVendas();
         $resultado = $valida->validar($vendas);
         if ($resultado->getErrors()) {
-            return Redirect::route("/marca/cadastro", [
+            return Redirect::route("/vendas/cadastro", [
                 'errors' => $result->getErrors(),
             ]);
         }
@@ -61,9 +66,5 @@ class VendasController extends Controller
             ]
         );
         Session::clearSession(['errors', 'success', 'form']);
-    }
-    public function salvarCliente()
-    {
-
     }
 }
