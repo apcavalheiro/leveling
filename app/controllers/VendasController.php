@@ -1,9 +1,7 @@
 <?php
-namespace App\controllers;
 
 namespace App\controllers;
 
-namespace App\Controllers;
 
 use App\Controllers\Controller;
 use App\Models\Dao\VendasDao;
