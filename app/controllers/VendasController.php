@@ -14,14 +14,10 @@ class VendasController extends Controller
 {
     public function index()
     {
-
         $vendasDao = new VendasDao();
-
         self::setViewParam('listaDeVendas', $vendasDao->listar());
-        /*
-        
         $this->render('/vendas/index');
-        Session::clearSession(['errors', 'success']);*/
+        Session::clearSession(['errors', 'success']);
     }
 
     public function show($id)
