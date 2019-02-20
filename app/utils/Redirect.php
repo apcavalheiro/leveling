@@ -2,6 +2,8 @@
 
 namespace App\Utils;
 
+use App\Utils\Session;
+
 class Redirect
 {
     public static function route($path, $session = [])

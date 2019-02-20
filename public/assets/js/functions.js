@@ -1,9 +1,11 @@
 $(document).ready(function () {
     let soma = 0;
-    $('#title').html('Cadastro de Vendas!');
+    $('#titleCadastro').html('Cadastro de Vendas!');
+    $('#titleShow').html('Lista do cliente');
+    $('#titleIndex').html('Lista de Vendas!');
 
-    $('#title').animate({
-        fontSize: '4em',
+    $('h2').animate({
+        fontSize: '3em',
     }, 2000, function () {
         $(this).css('color', 'blue');
     });
@@ -11,14 +13,14 @@ $(document).ready(function () {
     $('#btnAdd').click(function () {
         if ($('#produto').val() === '' ||
             $('#preco').val() === '') {
-            $('#erros').html('<p> Os campos produto ou preço não podem ser vazios!</p>')
+            $('#erros').html('<strong>Os campos produto ou preço não podem ser vazios!</strong>')
                 .css('color', 'red');
             return false;
         } else {
             $('#erros').html('');
             let produto = $('#produto').val();
             let preco = $('#preco').val();
-            $('table').append('<tr><br><th scope="col"> #</th>' +
+            $('table').prepend('<tr><br><th scope="col"> #</th>' +
                 '<td> ' + produto + '</td><br>' +
                 '<td> ' + preco + '</td><br>' +
                 '</tr><br>');
@@ -30,6 +32,10 @@ $(document).ready(function () {
             $('#produto').val('');
             $('#preco').val('');
         }
+    });
+
+    $('#excluir').click(function () {
+        $('#titleIndex').html('Funcionalidade não implementada!');
     });
 
     $('#title').css('color', 'red');

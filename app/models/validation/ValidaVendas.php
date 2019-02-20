@@ -11,9 +11,6 @@ class ValidaVendas
     {
         $insert = new ResultadoValidacao();
 
-        if (empty($vendas->getCliente())) {
-            $insert->addErrors('cliente', "Cliente: Este campo não pode ser vazio");
-        }
         if (empty($vendas->getProduto())) {
             $insert->addErrors('produto', "Produto: Este campo não pode ser vazio");
         }

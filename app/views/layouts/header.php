@@ -7,8 +7,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="/assets/js/jquery-3.2.1.min.js"></script>
     <script src="/assets/js/jquery.validate.min.js" type="text/javascript"></script>
-
-
     <title>
         <?php echo TITLE; ?>
     </title>

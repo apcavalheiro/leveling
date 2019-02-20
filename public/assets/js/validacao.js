@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    $('form').validate({
+    $("form").validate({
         rules: {
             total: {
                 required: true
@@ -38,8 +38,8 @@ $(document).ready(function () {
         maxlength: "Não insira mais do que {0} caracteres"
     });
 
-    setTimeout(function () {
-        $('#notice').fadeOut('fast');
-    }, 5000);
-
 });
+
+setTimeout(function () {
+    $('#notice').fadeOut('fast');
+}, 5000);
