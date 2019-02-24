@@ -14,8 +14,8 @@
             </div>
             <?php }?>
             <?php }?>
-            <?php foreach ($viewVar['item'] as $item) {?>
-            <h2><?=$item->getCliente()->getNome();?></h2>
+
+            <h2><?=$viewVar['item']['nome'][0];?></h2>
             <table class="table table-bordered table-hover">
                 <thead class="thead-dark">
                     <tr>
@@ -24,24 +24,26 @@
                     </tr>
                 </thead>
                 <tbody>
+                    <?php $qtd = count($viewVar['item']['vendas'])?>
+                    <?php for ($i = 0; $i < $qtd; $i++) {?>
                     <tr>
-                        <td><?=$item->getProduto();?></td>
-                        <td><?=$item->getPreco();?></td>
+                        <td><?=$viewVar['item']['vendas'][$i]['produto'];?></td>
+                        <td><?=$viewVar['item']['vendas'][$i]['preco'];?></td>
                     </tr>
+                    <?php }?>
                 </tbody>
                 <tfoot>
                     <tr>
                         <td>Total</td>
-                        <td>R$<?=dataToMoeda($item->getTotal());?></td>
+                        <td>R$ <?=$viewVar['item']['total'][0];?></td>
                     </tr>
                 </tfoot>
             </table>
             <div class="row">
-                <div class="row">
-                    <a href="/vendas/index" class="btn btn-primary btn-sm pull-right">
-                        <i class="glyphicon glyphicon-arrow-left"></i>Voltar</a>
-                </div>
-                <?php }?>
+                <a href="/vendas/index" class="btn btn-primary btn-sm pull-right">
+                    <i class="glyphicon glyphicon-arrow-left"></i>Voltar</a>
             </div>
+
         </div>
     </div>
+</div>

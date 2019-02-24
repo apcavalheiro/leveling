@@ -17,7 +17,7 @@ class VendasController extends Controller
     public function index()
     {
         $vendasDao = new VendasDao();
-        self::setViewParam('listaDeVendas', $vendasDao->listar());
+        self::setViewParam('item', $vendasDao->listar());
         $this->render('/vendas/index');
         Session::clearSession(['errors', 'success']);
     }
@@ -25,7 +25,8 @@ class VendasController extends Controller
     public function show($id)
     {
         $vendasDao = new VendasDao();
-        self::setViewParam('item', $vendasDao->listar($id));
+        self::setViewParam('item', $vendasDao->getById($id));
+        Session::setSession('form', $_POST);
         $this->render('/vendas/show');
         Session::clearSession(['errors', 'success']);
     }
@@ -38,7 +39,7 @@ class VendasController extends Controller
 
     public function salvar()
     {
-        Session::clearSession(['errors', 'success', 'form']);
+        Session::setSession('form', $_POST);
 
         $cliente = new Cliente();
         $vendas = new Vendas();
@@ -48,9 +49,8 @@ class VendasController extends Controller
         $validaVendas = new ValidaVendas();
         $validaCliente = new ValidaCliente();
 
-        Session::setSession('form', $_POST);
-
         $cliente->setNome($_POST['nome']);
+
         $resultadoCliente = $validaCliente->validar($cliente);
         if ($resultadoCliente->getErrors()) {
             return Redirect::route(
@@ -60,35 +60,37 @@ class VendasController extends Controller
         }
 
         $clienteDao->salvarCliente($cliente);
-        $clienteId = $clienteDao->getIdCliente($cliente->getNome());
+        $clienteId = $clienteDao->getLastId();
         if (empty($clienteId)) {
             return Redirect::route(
                 "/vendas/cadastro", [
-                    'errors' => "Erro ao buscar id do cliente na base de dados!",
+                    'errors' => ["Erro ao buscar id do cliente na base de dados!"],
                 ]);
         }
+        Session::clearSession(['errors', 'success', 'form']);
+        $qtdVendas = count($_POST['produto']);
 
-        foreach ($_POST as $item) {
-            $vendas->setProduto($item['produto']);
-            $vendas->setPreco($item['preco']);
+        for ($i = 0; $i < $qtdVendas; $i++) {
+            $vendas->setProduto($_POST['produto'][$i]);
+            $vendas->setPreco($_POST['preco'][$i]);
+            $vendas->setId($clienteId);
+
+            $resultadoVendas = $validaVendas->validar($vendas);
+            if ($resultadoVendas->getErrors()) {
+                return Redirect::route(
+                    "/vendas/cadastro", [
+                        'errors' => $resultadoVendas->getErrors(),
+                    ]);
+            }
+            Session::clearSession(['errors', 'success', 'form']);
+            $vendasDao->salvarVenda($vendas);
         }
-
-        $vendas->setClienteId($clienteId);
-        $resultadoVendas = $validaVendas->validar($vendas);
-
-        if ($resultadoVendas->getErrors()) {
-            return Redirect::route(
-                "/vendas/cadastro", [
-                    'errors' => $resultadoVendas->getErrors(),
-                ]);
-        }
-
-        $vendasDao->salvarVenda($vendas);
         return Redirect::route(
             "/vendas",
             [
                 'success' => ['A venda foi salva com sucesso!'],
             ]
         );
+        Session::clearSession(['errors', 'success', 'form']);
     }
 }

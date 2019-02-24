@@ -1,4 +1,5 @@
 <?php
+namespace App\models\dao;
 
 namespace App\Models\Dao;
 
@@ -7,71 +8,42 @@ use App\Models\Entities\Vendas;
 
 class VendasDao extends BaseDao
 {
-    public function getById($id)
+
+    public function getById($valor)
     {
-        $resultado = $this->select(
-            "SELECT      v.id as vendaId,
-                              c.id as clienteId,
-                              v.produto as produto,
-                              v.preco,
-                              c.nome as nome
-                              FROM vendas as v
-                      INNER JOIN cliente as c ON v.cliente_id = c.id
-                      WHERE v.id = $id"
+        $id = $valor[0];
+        $produtos = $this->select(
+            "select produto, preco, vendas.id, cliente.id from vendas inner join cliente on cliente.id = vendas.cliente_id where cliente_id = $id"
+        );
+        $cliente = $this->select(
+            "select distinct nome,id from cliente where id = $id"
+        );
+        $soma = $this->select(
+            "select sum(preco) as total from vendas where vendas.cliente_id = $id"
         );
 
-        $dataSetVendas = $resultado->fetch();
-
-        if ($dataSetVendas) {
-            $venda = new Vendas();
-            $venda->setVendaId($dataSetVendas['vendaId']);
-            $venda->setProduto($dataSetVendas['produto']);
-            $venda->setPreco($dataSetVendas['preco']);
-            $total += $dataSetvenda['preco'];
-
-            $venda->setTotal($total);
-            $venda->getClienteId()->setClienteId($dataSetVendas['clienteId']);
-            $venda->getCliente()->setNome($dataSetvenda['nome']);
-
-            return $venda;
-        }
-
-        return false;
+        $total = $soma->fetch();
+        $vendas = $produtos->fetchAll();
+        $nome = $cliente->fetch();
+        $itens['total'] = $total;
+        $itens['vendas'] = $vendas;
+        $itens['nome'] = $nome;
+        return $itens;
     }
+
     public function listar()
     {
-        $resultado = $this->select(
-            'SELECT  v.id as vendaId,
-        v.produto as produto,
-        v.preco,
-        c.nome as nome
-        FROM vendas as v
-        INNER JOIN  cliente as c ON v.cliente_id = c.id'
+        $cliente = $this->select(
+            "select distinct nome from cliente"
         );
-        $dataSetVendas = $resultado->fetchAll();
-        if ($dataSetVendas) {
-
-            $listavendas = [];
-
-            foreach ($dataSetVendas as $dataSetvenda) {
-                $venda = new Vendas();
-
-                $venda->setId($dataSetvenda['vendaId']);
-                $venda->setProduto($dataSetvenda['produto']);
-                $venda->setPreco($dataSetvenda['preco']);
-
-                $total += $dataSetvenda['preco'];
-
-                $venda->setTotal($total);
-                $venda->getCliente()->setNome($dataSetvenda['nome']);
-
-                $listavendas[] = $venda;
-            }
-
-            return $listavendas;
-        }
-
-        return $resultado;
+        $vendas = $this->select(
+            "select c.nome, c.id, preco from cliente as c inner join vendas as v on v.cliente_id = c.id"
+        );
+        $dadosVenda = $vendas->fetchAll();
+        $dataCliente = $cliente->fetchAll();
+        $dados['nome'] = $dataCliente;
+        $dados['vendas'] = $dadosVenda;
+        return $dados;
     }
 
     public function salvarVenda(Vendas $venda)
@@ -79,16 +51,16 @@ class VendasDao extends BaseDao
         try {
 
             $produto = $venda->getProduto();
-            $preco = $venda->getPreco();
-            $clienteId = $venda->getCliente()->getClienteId();
+            $preco = floatval($venda->getPreco());
+            $clienteId = $venda->getId();
 
             return $this->insert(
                 'vendas',
                 ":produto,:preco,:cliente_id",
                 [
-                    ':produto' => $nome,
+                    ':produto' => $produto,
                     ':preco' => $preco,
-                    ':cliente_id' => $cliente_id,
+                    ':cliente_id' => $clienteId,
                 ]
             );
 
@@ -96,5 +68,4 @@ class VendasDao extends BaseDao
             throw new \Exception("Erro na gravação de dados." . $e->getMessage(), 500);
         }
     }
-
 }

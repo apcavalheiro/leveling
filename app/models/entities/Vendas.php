@@ -6,36 +6,25 @@ use App\Models\Entities\Cliente;
 
 class Vendas
 {
-    private $vendaId;
-    private $cliente;
+    private $id;
     private $produto;
     private $preco;
+    private $cliente;
     private $total;
 
     public function __construct()
     {
         $this->cliente = new Cliente();
     }
+
     public function getId()
     {
-        return $this->vendaId;
+        return $this->id;
     }
 
     public function setId($id)
     {
-        $this->vendaId = $id;
-
-        return $this;
-    }
-
-    public function getClienteId()
-    {
-        return $this->clienteId;
-    }
-
-    public function setClienteId($clienteId)
-    {
-        $this->clienteId = $clienteId;
+        $this->id = $id;
 
         return $this;
     }

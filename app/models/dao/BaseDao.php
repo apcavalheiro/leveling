@@ -49,6 +49,11 @@ abstract class BaseDao
         }
     }
 
+    public function getLastId()
+    {
+        return $this->connection->lastInsertId();
+    }
+
     public function delete($table, $where = null)
     {
         if (!empty($table)) {

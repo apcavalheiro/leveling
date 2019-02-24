@@ -25,16 +25,8 @@ class ClienteDao extends BaseDao
         }
     }
 
-    public function getIdCliente($nome)
+    public function lastId()
     {
-        try {
-            return $resultado = $this->select(
-                "select id from cliente where nome='$nome'"
-            );
-
-        } catch (\Exception $e) {
-            throw new \Exception("Erro na recuperação de dados." . $e->getMessage(), 500);
-        }
-
+        return $this->insert->lastInsertId();
     }
 }

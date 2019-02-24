@@ -12,7 +12,7 @@ class ValidaCliente
         $insert = new ResultadoValidacao();
 
         if (empty($cliente->getNome())) {
-            $insert->addErrors('Nome', "Nome: Este campo não pode ser vazio");
+            $insert->addErrors('nome', "Nome: Este campo não pode ser vazio");
         }
 
         return $insert;
